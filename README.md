@@ -1,4 +1,4 @@
-# small_signal
+# room_automation
 
 A new Flutter project.
 
