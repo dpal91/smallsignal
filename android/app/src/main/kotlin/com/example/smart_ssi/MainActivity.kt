@@ -1,4 +1,4 @@
-package com.example.small_signal
+package com.example.smart_ssi
 
 import io.flutter.embedding.android.FlutterActivity
 

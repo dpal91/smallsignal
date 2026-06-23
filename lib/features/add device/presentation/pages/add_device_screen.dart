@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:room_automation/features/add%20device/presentation/widget/device_found.dart';
+import 'package:room_automation/features/add%20device/presentation/widget/wifi_scanner.dart';
+import 'package:room_automation/features/add%20device/presentation/widget/wifi_warning.dart';
 
 class AddDeviceScreen extends StatelessWidget {
   const AddDeviceScreen({super.key});
@@ -59,122 +62,26 @@ class AddDeviceScreen extends StatelessWidget {
               const SizedBox(height: 30),
 
               // WiFi Warning Card
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xfff6f6f6),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "Turn on Wi-Fi",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            "Wi-Fi is required to search for devices.",
-                            style: TextStyle(color: Colors.grey, fontSize: 15),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        const CircleAvatar(
-                          radius: 22,
-                          backgroundColor: Color(0xffe5e5e5),
-                          child: Icon(Icons.wifi, color: Colors.grey),
-                        ),
-
-                        Positioned(
-                          top: -4,
-                          right: -4,
-                          child: Container(
-                            width: 20,
-                            height: 20,
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "!",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              WiFi_Warning(),
 
               const SizedBox(height: 40),
 
+              WifiScannerScreen(),
+              const SizedBox(height: 40),
+
               // Device Found
-              Column(
-                children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
-                    child: Center(
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: const Icon(
-                          Icons.toggle_on,
-                          size: 40,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  const Text(
-                    "4Node Smart\nSwitch",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, color: Colors.black87),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 250),
-
-              Center(
+              DeviceCard(),
+              Align(
+                alignment: AlignmentGeometry.bottomCenter,
                 child: RichText(
                   text: const TextSpan(
                     style: TextStyle(color: Colors.grey, fontSize: 16),
                     children: [
                       TextSpan(text: "Devices will be added automatically. "),
-                      TextSpan(
-                        text: "Cancel (18)",
-                        style: TextStyle(color: Colors.red),
-                      ),
+                      // TextSpan(
+                      //   text: "Cancel (18)",
+                      //   style: TextStyle(color: Colors.red),
+                      // ),
                     ],
                   ),
                 ),
@@ -182,66 +89,76 @@ class AddDeviceScreen extends StatelessWidget {
 
               const SizedBox(height: 25),
 
-              Divider(color: Colors.grey.shade300),
+              // Divider(color: Colors.grey.shade300),
 
-              const SizedBox(height: 20),
+              // const SizedBox(height: 20),
 
-              Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      "Add Manually",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+              // Row(
+              //   children: [
+              //     const Expanded(
+              //       child: Text(
+              //         "Add Manually",
+              //         style: TextStyle(
+              //           fontSize: 24,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //       ),
+              //     ),
 
-                  Container(
-                    width: 180,
-                    height: 50,
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    decoration: BoxDecoration(
-                      color: const Color(0xfff5f5f5),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Row(
-                      children: const [
-                        Icon(Icons.search, color: Colors.grey),
-                        SizedBox(width: 10),
-                        Text(
-                          "Search for a category",
-                          style: TextStyle(color: Colors.black87),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              //     Container(
+              //       width: 180,
+              //       height: 50,
+              //       padding: const EdgeInsets.symmetric(horizontal: 15),
+              //       decoration: BoxDecoration(
+              //         color: const Color(0xfff5f5f5),
+              //         borderRadius: BorderRadius.circular(30),
+              //       ),
+              //       child: Row(
+              //         children: const [
+              //           Icon(Icons.search, color: Colors.grey),
+              //           SizedBox(width: 10),
+              //           Text(
+              //             "Search for a category",
+              //             style: TextStyle(color: Colors.black87),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
 
-              const SizedBox(height: 35),
+              // const SizedBox(height: 35),
 
-              const Text(
-                "Electrical",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
+              // const Text(
+              //   "Electrical",
+              //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              // ),
 
-              const SizedBox(height: 20),
+              // const SizedBox(height: 20),
 
-              Wrap(
-                spacing: 20,
-                runSpacing: 20,
-                children: [
-                  _categoryTile(Icons.power, "Socket"),
-                  _categoryTile(Icons.lightbulb_outline, "Light"),
-                  _categoryTile(Icons.toggle_on, "Switch"),
-                  _categoryTile(Icons.electrical_services, "Breaker"),
-                ],
-              ),
+              // Wrap(
+              //   spacing: 20,
+              //   runSpacing: 20,
+              //   children: [
+              //     _categoryTile(Icons.power, "Socket"),
+              //     _categoryTile(Icons.lightbulb_outline, "Light"),
+              //     _categoryTile(Icons.toggle_on, "Switch"),
+              //     _categoryTile(Icons.electrical_services, "Breaker"),
+              //   ],
+              // ),
 
-              const SizedBox(height: 40),
+              // const SizedBox(height: 40),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: 25),
+        child: RichText(
+          textAlign: TextAlign.center,
+          text: const TextSpan(
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+            children: [TextSpan(text: "Devices will be added automatically.")],
           ),
         ),
       ),

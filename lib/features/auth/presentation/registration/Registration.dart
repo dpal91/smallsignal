@@ -260,7 +260,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 10),
 
                   const Text(
-                    "Create your room automation account",
+                    "Create your small signal account",
                     style: TextStyle(color: Colors.grey),
                   ),
 

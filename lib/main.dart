@@ -39,9 +39,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(Injection.authRepository)..add(CheckLoginStatus()),
+      create: (context) =>
+          AuthBloc(Injection.authRepository)..add(CheckLoginStatus()),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Small Signal',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
         home: SplashScreen(),
