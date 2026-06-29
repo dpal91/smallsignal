@@ -1,23 +1,17 @@
 part of 'add_device_bloc.dart';
 
-sealed class AddDeviceState extends Equatable {
-  const AddDeviceState();
+enum WifiStatus { disabled, enabling, enabled, scanning, devicesFound, error }
 
-  @override
-  List<Object> get props => [];
-}
+class AddDeviceState {
+  final WifiStatus status;
+  final List<String> devices;
 
-class AddDeviceInitial extends AddDeviceState {}
+  AddDeviceState({required this.status, this.devices = const []});
 
-class AddDeviceCheckingWifi extends AddDeviceState {}
-
-class AddDeviceWifiDisabled extends AddDeviceState {}
-
-class AddDeviceScanning extends AddDeviceState {}
-
-class AddDeviceDevicesFound extends AddDeviceState {}
-
-class AddDeviceError extends AddDeviceState {
-  final String message;
-  const AddDeviceError(this.message);
+  AddDeviceState copyWith({WifiStatus? status, List<String>? devices}) {
+    return AddDeviceState(
+      status: status ?? this.status,
+      devices: devices ?? this.devices,
+    );
+  }
 }

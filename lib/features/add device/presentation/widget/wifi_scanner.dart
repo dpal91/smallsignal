@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class WifiScannerScreen extends StatefulWidget {
-  const WifiScannerScreen({super.key});
+  final bool isScanning;
+  final bool iswifiEnabled;
+
+  const WifiScannerScreen({
+    super.key,
+    required this.isScanning,
+    required this.iswifiEnabled,
+  });
 
   @override
   State<WifiScannerScreen> createState() => _WifiScannerScreenState();
@@ -29,9 +36,13 @@ class _WifiScannerScreenState extends State<WifiScannerScreen>
 
   @override
   Widget build(BuildContext context) {
-    const color = Color(0xFF2196F3);
+    final centerColor = widget.iswifiEnabled
+        ? const Color(0xFF2196F3)
+        : Colors.grey;
 
-    return Container(
+    final showRipples = widget.iswifiEnabled && widget.isScanning;
+
+    return SizedBox(
       width: double.maxFinite,
       child: SizedBox(
         width: 250,
@@ -42,18 +53,22 @@ class _WifiScannerScreenState extends State<WifiScannerScreen>
             return Stack(
               alignment: Alignment.center,
               children: [
-                _buildRipple(0.0, color),
-                _buildRipple(0.3, color),
-                _buildRipple(0.66, color),
+                if (showRipples) _buildRipple(0.0, centerColor),
+                if (showRipples) _buildRipple(0.3, centerColor),
+                if (showRipples) _buildRipple(0.66, centerColor),
 
                 Container(
                   width: 80,
                   height: 80,
-                  decoration: const BoxDecoration(
-                    color: color,
+                  decoration: BoxDecoration(
+                    color: centerColor,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.wifi, color: Colors.white, size: 40),
+                  child: const Icon(
+                    Icons.wifi,
+                    color: Colors.white,
+                    size: 40,
+                  ),
                 ),
               ],
             );
@@ -64,14 +79,17 @@ class _WifiScannerScreenState extends State<WifiScannerScreen>
   }
 
   Widget _buildRipple(double delay, Color color) {
-    double progress = (controller.value - delay) % 1.0;
+    final progress = (controller.value - delay) % 1.0;
 
     return Container(
       width: 80 + (progress * 140),
       height: 80 + (progress * 140),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: color.withOpacity(1 - progress), width: 2),
+        border: Border.all(
+          color: color.withValues(alpha: 1 - progress),
+          width: 2,
+        ),
       ),
     );
   }

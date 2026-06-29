@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:room_automation/features/add%20device/data/repository/wifi_Repo_implementation.dart';
+import 'package:room_automation/features/add%20device/data/repository/wifi_repository.dart';
 import 'package:room_automation/features/auth/data/data_service/firebase_auth_service.dart';
 import 'package:room_automation/features/auth/domain/local_storage/local_storage_service.dart';
 import 'package:room_automation/features/auth/domain/repositories/auth_repo_impl.dart';
@@ -20,4 +22,6 @@ class Injection {
     firebaseService,
     localStorageService,
   );
+
+  static final WifiRepository wifiRepository = WifiRepositoryImpl();
 }

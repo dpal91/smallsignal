@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:room_automation/features/add%20device/presentation/bloc/bloc/add_device_bloc.dart';
 import 'package:room_automation/features/add%20device/presentation/pages/add_device_screen.dart';
+import 'package:room_automation/injection.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -168,7 +171,12 @@ class HomeScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AddDeviceScreen(),
+                                  builder: (context) => BlocProvider(
+                                    create: (context) =>
+                                        AddDeviceBloc(Injection.wifiRepository)
+                                          ..add(CheckWifiStatus()),
+                                    child: AddDeviceScreen(),
+                                  ),
                                 ),
                               );
                             },
