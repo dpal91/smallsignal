@@ -21,7 +21,9 @@ class _WifiScannerScreenState extends State<WifiScannerScreen>
   @override
   void initState() {
     super.initState();
-
+    print(
+      "isScanning: ${widget.isScanning} iswifi enabledd: ${widget.iswifiEnabled}",
+    );
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
@@ -64,11 +66,7 @@ class _WifiScannerScreenState extends State<WifiScannerScreen>
                     color: centerColor,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.wifi,
-                    color: Colors.white,
-                    size: 40,
-                  ),
+                  child: const Icon(Icons.wifi, color: Colors.white, size: 40),
                 ),
               ],
             );
