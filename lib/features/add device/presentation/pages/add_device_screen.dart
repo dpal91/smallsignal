@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:room_automation/features/add%20device/data/bloc/add_device_bloc.dart';
 import 'package:room_automation/features/add%20device/presentation/widget/device_found.dart';
 import 'package:room_automation/features/add%20device/presentation/widget/wifi_scanner.dart';
-import 'package:room_automation/features/device_home_page/presentation/device_home_screen.dart';
+import 'package:room_automation/features/switch_screen_page/presentation/pages/switch_screen.dart';
 
 class AddDeviceScreen extends StatefulWidget {
   const AddDeviceScreen({super.key});
@@ -268,7 +268,12 @@ class _AddDeviceScreenState extends State<AddDeviceScreen>
 
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const DeviceHomeScreen()),
+              MaterialPageRoute(
+                builder: (_) => const SwitchScreen(
+                  deviceName: "device",
+                  deviceId: "aabbcc",
+                ),
+              ),
             );
           }
         },

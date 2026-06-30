@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:room_automation/features/add%20device/data/bloc/add_device_bloc.dart';
 import 'package:room_automation/features/add%20device/presentation/pages/add_device_screen.dart';
+import 'package:room_automation/features/add%20device/presentation/widget/device_found.dart';
+import 'package:room_automation/features/switch_screen_page/data/bloc/bloc/switch_bloc.dart';
+import 'package:room_automation/features/switch_screen_page/presentation/pages/switch_screen.dart';
 import 'package:room_automation/injection.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -146,6 +149,24 @@ class HomeScreen extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 180),
+
+                    DeviceCard(
+                      deviceName: "deviceName",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider(
+                              create: (context) => SwitchBloc(Injection.deviceRepository),
+                              child: SwitchScreen(
+                                deviceName: "4 node",
+                                deviceId: "aabbcc",
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
 
                     // Empty State
                     Center(
