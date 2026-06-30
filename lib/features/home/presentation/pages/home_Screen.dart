@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:room_automation/features/add%20device/data/bloc/add_device_bloc.dart';
 import 'package:room_automation/features/add%20device/presentation/pages/add_device_screen.dart';
 import 'package:room_automation/features/add%20device/presentation/widget/device_found.dart';
+import 'package:room_automation/features/home/data/bloc/bloc/home_screen_bloc.dart';
+import 'package:room_automation/features/home/data/model/saved_devices.dart';
 import 'package:room_automation/features/switch_screen_page/data/bloc/bloc/switch_bloc.dart';
 import 'package:room_automation/features/switch_screen_page/presentation/pages/switch_screen.dart';
 import 'package:room_automation/injection.dart';
@@ -57,12 +59,23 @@ class HomeScreen extends StatelessWidget {
                             const SizedBox(width: 16),
                             IconButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => AddDeviceScreen(),
-                                //   ),
-                                // );
+                                context.read<HomeScreenBloc>().add(
+                                  ClearSharedPrefDevices(),
+                                );
+                              },
+                              icon: Icon(Icons.clear),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                List<SavedDevices> list = [
+                                  SavedDevices(
+                                    deviecID: "aabb",
+                                    deviecName: "aabb",
+                                  ),
+                                ];
+                                context.read<HomeScreenBloc>().add(
+                                  AddSavedDevices(list: list),
+                                );
                               },
                               icon: Icon(
                                 Icons.add,
@@ -148,77 +161,114 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(height: 180),
-
-                    DeviceCard(
-                      deviceName: "deviceName",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BlocProvider(
-                              create: (context) => SwitchBloc(Injection.deviceRepository),
-                              child: SwitchScreen(
-                                deviceName: "4 node",
-                                deviceId: "aabbcc",
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-
-                    // Empty State
-                    Center(
-                      child: Column(
-                        children: [
-                          const Text(
-                            "Add Your First Device",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          const Text(
-                            "Connect a device and let AI control it for you",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
-                          ),
-                          const SizedBox(height: 30),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BlocProvider(
-                                    create: (context) =>
-                                        AddDeviceBloc(Injection.wifiRepository)
-                                          ..add(CheckWifiStatus(false)),
-                                    child: AddDeviceScreen(),
-                                  ),
+                    BlocBuilder<HomeScreenBloc, HomeScreenState>(
+                      builder: (context, state) {
+                        print("current Home State: " + state.toString());
+                        if (state is DeviceFound) {
+                          return GridView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: state.savedDevices.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2, // 2 columns
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
                                 ),
+                            itemBuilder: (context, index) {
+                              var device = state.savedDevices[index];
+                              return DeviceCard(
+                                deviceName: device.deviecName,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BlocProvider(
+                                        create: (context) => SwitchBloc(
+                                          Injection.deviceRepository,
+                                        ),
+                                        child: SwitchScreen(
+                                          deviceName: device.deviecName,
+                                          deviceId: device.deviecID,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
                               );
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              minimumSize: const Size(180, 58),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
+                          );
+                        }
+                        if (state is HomeScreenInitial) {
+                          return Column(
+                            children: [
+                              const SizedBox(height: 180),
+
+                              // Empty State
+                              Center(
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      "Add Your First Device",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text(
+                                      "Connect a device and let AI control it for you",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 30),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => BlocProvider(
+                                              create: (context) =>
+                                                  AddDeviceBloc(
+                                                    Injection.wifiRepository,
+                                                  )..add(
+                                                    CheckWifiStatus(false),
+                                                  ),
+                                              child: AddDeviceScreen(),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.black,
+                                        foregroundColor: Colors.white,
+                                        minimumSize: const Size(180, 58),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        "Add Now",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            child: const Text(
-                              "Add Now",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                            ],
+                          );
+                        }
+                        return SizedBox();
+                      },
                     ),
                   ],
                 ),

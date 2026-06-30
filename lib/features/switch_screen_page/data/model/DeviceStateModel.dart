@@ -10,4 +10,16 @@ class DeviceStateModel {
       switches: Map<String, bool>.from(json["switches"] ?? {}),
     );
   }
+
+  factory DeviceStateModel.defaultState() {
+    return DeviceStateModel(
+      voltage: 0,
+      switches: {
+        "Switch 1": false,
+        "Switch 2": false,
+        "Switch 3": false,
+        "Switch 4": false,
+      },
+    );
+  }
 }

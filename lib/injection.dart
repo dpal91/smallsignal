@@ -27,7 +27,9 @@ class Injection {
     localStorageService,
   );
 
-  static final WifiRepository wifiRepository = WifiRepositoryImpl();
+  static final WifiRepository wifiRepository = WifiRepositoryImpl(
+    localStorageService,
+  );
 
   static final DeviceRepository deviceRepository = DeviceRepositoryImpl(
     firebaseDatabase,

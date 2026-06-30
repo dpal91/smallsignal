@@ -1,11 +1,15 @@
 import 'package:flutter/services.dart';
 import 'package:room_automation/features/add%20device/data/repository/wifi_repository.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:room_automation/features/auth/domain/local_storage/local_storage_service.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 
 class WifiRepositoryImpl implements WifiRepository {
+  final LocalStorageService localStorageService;
   static const MethodChannel _channel = MethodChannel('wifi_state');
+
+  WifiRepositoryImpl(this.localStorageService);
 
   @override
   Future<bool> isWifiEnabled() async {

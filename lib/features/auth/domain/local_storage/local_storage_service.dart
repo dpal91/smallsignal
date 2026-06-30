@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:room_automation/features/auth/data/entities/user_details.dart';
+import 'package:room_automation/features/home/data/model/saved_devices.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService {
   static const String userDetailsKey = 'userDetails';
-  // static const String uidKey = 'uid';
+  static const String deviceList = 'deviceList';
 
   Future<void> saveUser({required String user}) async {
     final prefs = await SharedPreferences.getInstance();
@@ -24,19 +25,28 @@ class LocalStorageService {
         : UserDetails(id: "", name: "", email: "", phoneNumber: "");
   }
 
-  // Future<String?> getEmail() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(emailKey);
-  // }
-
-  // Future<String?> getUid() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(uidKey);
-  // }
-
-  Future<void> clear() async {
+  Future<void> saveList(List<SavedDevices> devices) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(userDetailsKey);
-    // await prefs.remove(uidKey);
+
+    final List<String> jsonList = devices
+        .map((device) => jsonEncode(device.toJson()))
+        .toList();
+
+    await prefs.setStringList(deviceList, jsonList);
+  }
+
+  Future<List<SavedDevices>> getDevices() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final List<String> jsonList = prefs.getStringList(deviceList) ?? [];
+
+    return jsonList
+        .map((item) => SavedDevices.fromJson(jsonDecode(item)))
+        .toList();
+  }
+
+  Future<void> clearList() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(deviceList);
   }
 }

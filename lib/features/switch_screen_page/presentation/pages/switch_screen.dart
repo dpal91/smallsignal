@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:room_automation/features/switch_screen_page/data/bloc/bloc/switch_bloc.dart';
-import 'package:room_automation/features/switch_screen_page/presentation/widgets/app_bar.dart';
+import 'package:room_automation/features/switch_screen_page/data/model/switch_model.dart';
 import 'package:room_automation/features/switch_screen_page/presentation/widgets/smart_switch_card.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,14 +29,13 @@ class _SwitchScreenState extends State<SwitchScreen> {
 
   Future<void> _refresh() async {
     context.read<SwitchBloc>().add(StartListening(widget.deviceId));
-
     await Future.delayed(const Duration(milliseconds: 800));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(widget.deviceName),
+      appBar: AppBar(title: Text(widget.deviceName ?? "Device ")),
 
       body: BlocBuilder<SwitchBloc, SwitchState>(
         builder: (context, state) {
@@ -165,16 +164,15 @@ class _SwitchScreenState extends State<SwitchScreen> {
   }
 
   Widget _actionButton(IconData icon, String title, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(50),
-      child: Column(
-        children: [
-          CircleAvatar(radius: 28, child: Icon(icon)),
-          const SizedBox(height: 8),
-          Text(title),
-        ],
-      ),
+    return Column(
+      children: [
+        InkWell(
+          onTap: onTap,
+          child: CircleAvatar(radius: 28, child: Icon(icon)),
+        ),
+        const SizedBox(height: 8),
+        Text(title),
+      ],
     );
   }
 }

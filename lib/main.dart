@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:room_automation/core/firebase/firebase_options.dart';
 import 'package:room_automation/features/auth/domain/bloc/login_bloc.dart';
 import 'package:room_automation/features/auth/presentation/login/login_screen.dart';
+import 'package:room_automation/features/home/data/bloc/bloc/home_screen_bloc.dart';
 import 'package:room_automation/features/splash_screen/splash_Screen.dart';
 import 'package:room_automation/injection.dart';
 
@@ -38,9 +39,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          AuthBloc(Injection.authRepository)..add(CheckLoginStatus()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              AuthBloc(Injection.authRepository)..add(CheckLoginStatus()),
+        ),
+        BlocProvider(
+          create: (context) => HomeScreenBloc(
+            Injection.localStorageService,
+            Injection.deviceRepository,
+          )..add(FetchSavedDevices()),
+        ),
+      ],
       child: MaterialApp(
         title: 'Small Signal',
         debugShowCheckedModeBanner: false,

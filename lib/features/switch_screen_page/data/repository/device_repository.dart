@@ -10,4 +10,8 @@ abstract class DeviceRepository {
     required String switchId,
     required bool state,
   });
+
+  Future<void> createDeviceIfNotExists({
+    required String deviceId,
+  });
 }

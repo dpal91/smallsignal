@@ -178,6 +178,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:room_automation/features/auth/data/entities/user_details.dart';
 import 'package:room_automation/features/auth/domain/bloc/login_bloc.dart';
+import 'package:room_automation/features/auth/presentation/login/login_screen.dart';
 import 'package:room_automation/features/home/presentation/pages/home_Screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -420,7 +421,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => HomeScreen()),
+                            MaterialPageRoute(builder: (_) => LoginScreen()),
                           );
                         },
                         child: const Text("Login"),
